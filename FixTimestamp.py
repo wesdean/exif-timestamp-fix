@@ -41,7 +41,7 @@ def processDirectory(dirName):
 
 def processFile(fileName):
     createdAt = getExifCreated(fileName)
-    if (createdAt):
+    if (createdAt and createdAt != '0000:00:00 00:00:00'):
         createdAt = datetime.datetime.strptime(createdAt, '%Y:%m:%d %H:%M:%S')
         fileCreatedAt = datetime.datetime.fromtimestamp(os.stat(fileName).st_birthtime)
 
