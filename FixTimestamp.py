@@ -5,11 +5,14 @@ import exifread
 import os
 import datetime
 import argparse
+import re
 
 parser = argparse.ArgumentParser()
 parser.add_argument("dirName", help="Name of directory to process")
 parser.add_argument("-r", "--recursive", help="Process subdirectories", action="count", default=0)
 args = parser.parse_args()
+
+DATEFIX_REGEX = re.compile(r": ")
 
 
 def getExifCreated(fileName):
@@ -17,7 +20,7 @@ def getExifCreated(fileName):
     tags = exifread.process_file(f)
     tag = tags.get("EXIF DateTimeOriginal")
     if (tag):
-        return tags.get("EXIF DateTimeOriginal").values
+        return re.sub(DATEFIX_REGEX, ':0', tags.get("EXIF DateTimeOriginal").values)
     else:
         return None
 
