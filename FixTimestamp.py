@@ -16,12 +16,15 @@ DATEFIX_REGEX = re.compile(r": ")
 
 
 def getExifCreated(fileName):
-    f = open(fileName, 'rb')
-    tags = exifread.process_file(f)
-    tag = tags.get("EXIF DateTimeOriginal")
-    if (tag):
-        return re.sub(DATEFIX_REGEX, ':0', tags.get("EXIF DateTimeOriginal").values)
-    else:
+    try:
+        f = open(fileName, 'rb')
+        tags = exifread.process_file(f)
+        tag = tags.get("EXIF DateTimeOriginal")
+        if (tag):
+            return re.sub(DATEFIX_REGEX, ':0', tags.get("EXIF DateTimeOriginal").values)
+        else:
+            return None
+    except OSError:
         return None
 
 
